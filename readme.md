@@ -31,14 +31,13 @@ For each annotation you can choose:
 
 Set annotations as follow:
 
-* Breackpoints: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
-* Errors: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
-* Breackpoints: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
-* Info: Text As Check Box Unselected
-* Matching tags: Text As Check Box Unselected
-* Occurrences: Text As Check Box Unselected
-* Search Results: Text As Check Box Unselected
-* Warnings: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
+* **Breackpoints**: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
+* **Errors**: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
+* **Info**: Text As Check Box Unselected
+* **Matching tags**: Text As Check Box Unselected
+* **Occurrences**: Text As Check Box Unselected
+* **Search Results**: Text As Check Box Unselected
+* **Warnings**: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
 
 
 ## Sounds Copyrights

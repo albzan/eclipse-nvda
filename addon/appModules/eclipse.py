@@ -1,4 +1,4 @@
-#Addon to improve access of the Eclipse IDE
+#NVDA Addon that improves access to the Eclipse IDE
 #This file is covered by the GNU General Public License.
 #See the file COPYING for more details.
 #Copyright (C) 2017 Alberto Zanella, Alessandro Albano

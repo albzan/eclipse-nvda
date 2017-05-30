@@ -14,6 +14,8 @@ This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 ### Additional Speech Features:
 * Reports the current line while you move through using debugging keys
 * Reports the current line while you press CTRL+. and the cursor moves.
+* Reports the current line while you press CTRL+SHIFT+UP/DOWN ARROW and jump to previous / jump to next method
+* Reports the current line while you press CTRL+SHIFT+P with a bracket selected: jump to the matching closing or opening bracket
 
 ## Eclipse Configuration
 In order to take advantages of all the features of this addon, you have to configure Eclipse to highlight errors and warnings instead of underline them.

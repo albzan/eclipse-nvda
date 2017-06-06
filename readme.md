@@ -1,4 +1,4 @@
-# Eclipse Enhanced
+# Eclipse Enhance
 This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 
 ## Add-On Features:

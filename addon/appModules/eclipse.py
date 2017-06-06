@@ -19,7 +19,7 @@ import ui
 
 addonHandler.initTranslation()
 
-ADDON_NAME = "eclipseEnhanced"
+ADDON_NAME = "eclipseEnhance"
 PLUGIN_DIR = os.path.abspath(os.path.join(globalVars.appArgs.configPath, "addons",ADDON_NAME))
 
 class EclipseTextArea(IAccessible):

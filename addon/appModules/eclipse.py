@@ -3,6 +3,7 @@
 #See the file COPYING for more details.
 #Copyright (C) 2017 Alberto Zanella, Alessandro Albano
 
+import tones
 import appModuleHandler
 import addonHandler
 from comtypes import COMError
@@ -23,7 +24,42 @@ ADDON_NAME = "eclipseEnhance"
 PLUGIN_DIR = os.path.abspath(os.path.join(globalVars.appArgs.configPath, "addons",ADDON_NAME))
 
 class EclipseTextArea(IAccessible):
-
+	oldpos = -1
+	
+	def event_gainFocus(self) :
+		super(IAccessible, self).event_gainFocus()
+		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
+		self.processLine(tx)
+	
+	def event_caret(self) :
+		super(IAccessible, self).event_caret()
+		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
+		tx.collapse()
+		tx.expand(textInfos.UNIT_LINE)
+		
+		if self.oldpos == tx._startOffset :
+			return
+		self.processLine(tx)
+		
+	def processLine(self,tx) :
+		self.oldpos = tx._startOffset
+		tx.collapse()
+		tx.expand(textInfos.UNIT_CHARACTER)
+		formatField=textInfos.FormatField()
+		for field in tx.getTextWithFields(self.appModule.cfg):
+			if isinstance(field,textInfos.FieldCommand) and isinstance(field.field,textInfos.FormatField):
+				formatField.update(field.field)
+		if(not formatField.has_key('background-color')) :
+			return
+		else :
+			rgb = formatField['background-color']
+			if(rgb == self.appModule.RGB_BP) : 
+				tones.beep(610,80)
+			if(rgb == self.appModule.RGB_DBG) :
+				tones.beep(310,160)
+			else :
+				return
+	
 	def event_valueChange(self):
 		# #2314: Eclipse incorrectly fires valueChange when the selection changes.
 		# Unfortunately, this causes us to speak the entire selection
@@ -37,6 +73,7 @@ class AppModule(appModuleHandler.AppModule):
 	RGB_ERROR = 'rgb(2550128)'
 	RGB_WARN = 'rgb(24420045)'
 	RGB_BP = 'rgb(00255)'
+	RGB_DBG = 'rgb(198219174)'
 	cfg = {
 			"detectFormatAfterCursor":False,
 			"reportFontName":False,"reportFontSize":False,"reportFontAttributes":False,"reportColor":True,"reportRevisions":False,

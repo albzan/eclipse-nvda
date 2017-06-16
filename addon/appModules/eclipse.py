@@ -4,6 +4,7 @@
 #Copyright (C) 2017 Alberto Zanella, Alessandro Albano
 
 import tones
+from logHandler import log
 import appModuleHandler
 import addonHandler
 from comtypes import COMError
@@ -57,9 +58,7 @@ class EclipseTextArea(IAccessible):
 				tones.beep(610,80)
 			if(rgb == self.appModule.RGB_DBG) :
 				tones.beep(310,160)
-			else :
-				return
-	
+
 	def event_valueChange(self):
 		# #2314: Eclipse incorrectly fires valueChange when the selection changes.
 		# Unfortunately, this causes us to speak the entire selection

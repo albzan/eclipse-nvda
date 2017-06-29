@@ -18,26 +18,29 @@ import globalCommands
 import globalVars
 import os.path
 import ui
+from NVDAObjects.behaviors import EditableText as Edit
+import eventHandler
 
 addonHandler.initTranslation()
 
 ADDON_NAME = "eclipseEnhance"
 PLUGIN_DIR = os.path.abspath(os.path.join(globalVars.appArgs.configPath, "addons",ADDON_NAME))
 
-class EclipseTextArea(IAccessible):
+class EclipseTextArea(IAccessible,Edit):
 	oldpos = -1
 	
 	def event_gainFocus(self) :
 		super(IAccessible, self).event_gainFocus()
 		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
 		self.processLine(tx)
-	
+		
 	def event_caret(self) :
-		super(IAccessible, self).event_caret()
+		super(Edit, self).event_caret()
+		if self is api.getFocusObject() and not eventHandler.isPendingEvents('gainFocus'):
+			self.detectPossibleSelectionChange()
 		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
 		tx.collapse()
 		tx.expand(textInfos.UNIT_LINE)
-		
 		if self.oldpos == tx._startOffset :
 			return
 		self.processLine(tx)

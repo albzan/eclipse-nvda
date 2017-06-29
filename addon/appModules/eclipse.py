@@ -1,25 +1,25 @@
 #eclipseEnhance - NVDA Addon that improves access to the Eclipse IDE
 #This file is covered by the GNU General Public License.
 #See the file COPYING for more details.
-#Copyright (C) 2017 Alberto Zanella, Alessandro Albano
+#Last update 2017-06-27
+#Copyright (C) 2017 Alberto Zanella
 
-import tones
-from logHandler import log
 import appModuleHandler
 import addonHandler
+import eventHandler
+import controlTypes
 from comtypes import COMError
 import nvwave
-import controlTypes
+import tones
 import api
 import textInfos
 import braille
 from NVDAObjects.IAccessible import IAccessible
+from NVDAObjects.behaviors import EditableText as Edit
 import globalCommands
 import globalVars
-import os.path
 import ui
-from NVDAObjects.behaviors import EditableText as Edit
-import eventHandler
+import os.path
 
 addonHandler.initTranslation()
 

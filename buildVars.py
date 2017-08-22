@@ -19,7 +19,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""Enhance the speech and braille support while using the Eclipse IDE reportings errors and warnings."""),
 	# version
-	"addon_version" : "0.1",
+	"addon_version" : "0.2",
 	# Author(s)
 	"addon_author" : u"Alberto Zanella, Alessandro Albano",
 	# URL for the add-on documentation support

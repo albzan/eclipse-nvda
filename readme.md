@@ -50,5 +50,6 @@ Sounds used to reports errors and warnings are covered by the Creative Commons L
 
 ## Authors:
 * Alberto Zanella
+* Iván Novegil C.
 * Alessandro Albano
 

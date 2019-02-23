@@ -1,11 +1,16 @@
 # Eclipse Enhance
+
+## [Download the latest version of the addon](https://github.com/albzan/eclipse-nvda/releases/download/0.2/eclipseEnhance-0.3.nvda-addon)
+
 This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 
 ## Add-On Features:
 ### Main Features:
 * Play different sounds while you use the Eclipse shortcut **CTRL+. (dot)** to identify whether an error or a warning is selected.
 * Play different sounds when you press **CTRL+S** to indicate if the saved file contains errors / warnings.
+* Play a sound when the Eclipse's **ContentAssist** code completion pops-up. You can access it by pressing the TAB Key;
 * Announce the breackpoint toggle while pressing **CTRL+SHIFT+B**.
+* Play a sound when you are in the editor during debug and you move on a line containing a breakpoint or in the current paused line.
 
 ### Additional Braille Features:
 * Reports braille messages if you save a file that contains errors and / or warnings;
@@ -46,10 +51,15 @@ Set annotations as follow:
 Sounds used to reports errors and warnings are covered by the Creative Commons License.
 * [For the error sound please refer to this page](https://www.freesound.org/people/Autistic%20Lucario/sounds/142608/)
 * [For the warning sound please refer to this page](https://www.freesound.org/people/ecfike/sounds/135125/)
+* [For the suggestions pop-up sound please refer to this page](https://freesound.org/people/debsound/sounds/320549/)
 
-
-## Authors:
+## Author:
 * Alberto Zanella
+
+## Translations:
 * Iván Novegil C.
+
+## Contribs:
+* Pawel Urbanski
 * Alessandro Albano
 

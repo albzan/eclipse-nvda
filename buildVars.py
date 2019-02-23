@@ -19,13 +19,20 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""Enhance the speech and braille support while using the Eclipse IDE reportings errors and warnings."""),
 	# version
-	"addon_version" : "0.2",
+	"addon_version" : "0.3",
 	# Author(s)
-	"addon_author" : u"Alberto Zanella, Alessandro Albano",
+	"addon_author" : u"Alberto Zanella",
+	"contributors" : u"Alessandro Albano, Pawel Urbanski",
 	# URL for the add-on documentation support
 	"addon_url" : None,
 	# Documentation file name
 	"addon_docFileName" : "readme.html",
+	# Minimum NVDA version supported (e.g. "2018.3.0")
+	"addon_minimumNVDAVersion" : None,
+	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
+	"addon_lastTestedNVDAVersion" : None,
+	# Add-on update channel (default is stable or None)
+	"addon_updateChannel" : None,
 }
 
 

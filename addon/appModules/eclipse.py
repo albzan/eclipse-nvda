@@ -2,9 +2,10 @@
 #This file is covered by the GNU General Public License.
 #See the file COPYING for more details.
 #Last update 2017-08-22
-#Copyright (C) 2017 Alberto Zanella <lapostadialberto@gmail.com>
+#Copyright (C) 2019 Alberto Zanella <lapostadialberto@gmail.com>
 
 from nvdaBuiltin.appModules import eclipse as base_eclipse
+from logHandler import log
 import addonHandler
 import eventHandler
 import controlTypes
@@ -19,6 +20,7 @@ import globalCommands
 import globalVars
 import ui
 import os.path
+import speech
 
 addonHandler.initTranslation()
 
@@ -34,11 +36,36 @@ RGB_DBG = 'rgb(198219174)'
 
 class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 	oldpos = -1
+	
+	def _get_name(self):
+		"""The name or label of this object (example: the text of a button).
+		@rtype: basestring
+		"""
+		return "edit"
+	
 	def event_gainFocus(self) :
 		super(EclipseTextArea,self).event_gainFocus()
 		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
 		self.processLine(tx)
 		
+	def reportFocus(self):
+		if(self.appModule.lastFocusOnSuggestions) :
+			self.appModule.lastFocusOnSuggestions = False
+			self._reportText()
+			return
+		super(EclipseTextArea,self).reportFocus()
+
+			
+	def _reportText(self):
+		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
+		if not tx.isCollapsed:
+			# Translators: This is spoken to indicate what has been selected. for example 'selected hello world'
+			speech.speakSelectionMessage(_("selected %s"),tx.text)
+		else:
+			tx.expand(textInfos.UNIT_LINE)
+			speech.speakTextInfo(tx,unit=textInfos.UNIT_LINE,reason=controlTypes.REASON_CARET)
+			
+	
 	def event_caret(self) :
 		super(Edit, self).event_caret()
 		if self is api.getFocusObject() and not eventHandler.isPendingEvents('gainFocus'):
@@ -145,7 +172,7 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 	
 class AppModule(base_eclipse.AppModule):
 	terminateButton = None
-	
+	lastFocusOnSuggestions = False
 	def get_terminate_button(self) :
 		if self.terminateButton != None : return
 		obj = api.getFocusObject()
@@ -162,11 +189,29 @@ class AppModule(base_eclipse.AppModule):
 				return
 			
 	
+	def event_gainFocus(self,obj,nh):
+		if obj.role == controlTypes.ROLE_PANE and self.lastFocusOnSuggestions :
+			return
+		nh()
+	
+	
+	
+	def event_focusEntered(self,obj,nh):
+		if obj.role == controlTypes.ROLE_TABCONTROL and self.lastFocusOnSuggestions :
+			return
+		nh()
+	
 	def event_NVDAObject_init(self, obj):
 		super(AppModule, self).event_NVDAObject_init(obj)
+		
 		if obj.role == controlTypes.ROLE_DIALOG and "show Template Proposals" in obj.description :
 			# Remove annoying tooltips
 			obj.description = ""
+			self.lastFocusOnSuggestions = True
+		
+		if obj.windowClassName == "SysListView32" and obj.role == controlTypes.ROLE_LISTITEM:
+			if(isinstance(api.getFocusObject(),  EclipseTextArea)) :
+				self.play_suggestions()
 
 	def chooseNVDAObjectOverlayClasses(self, obj, clsList):
 		super(AppModule, self).chooseNVDAObjectOverlayClasses(obj, clsList)
@@ -175,6 +220,11 @@ class AppModule(base_eclipse.AppModule):
 			clsList.insert(0, EclipseTextArea)
 
 
+	
+	def play_suggestions(self) :
+		wfile  = os.path.join(PLUGIN_DIR, "sounds", "suggestions.wav")
+		nvwave.playWaveFile(wfile)
+	
 	def play_error(self) :
 		wfile  = os.path.join(PLUGIN_DIR, "sounds", "error.wav")
 		nvwave.playWaveFile(wfile)

@@ -167,6 +167,9 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 		"kb:f7": "caret_moveByLine",
 		"kb:f8": "caret_moveByLine",
 		"kb:control+q": "caret_moveByLine",
+		"kb:control+d": "caret_moveByLine",
+		"kb:control+k": "caret_moveByLine",
+		"kb:control+shift+k": "caret_moveByLine",
 	}
 	
 	

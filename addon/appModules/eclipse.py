@@ -37,12 +37,6 @@ RGB_DBG = 'rgb(198219174)'
 class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 	oldpos = -1
 	
-	def _get_name(self):
-		"""The name or label of this object (example: the text of a button).
-		@rtype: basestring
-		"""
-		return "edit"
-	
 	def event_gainFocus(self) :
 		super(EclipseTextArea,self).event_gainFocus()
 		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)

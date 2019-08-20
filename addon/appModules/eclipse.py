@@ -68,6 +68,8 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 	
 	def event_caret(self) :
 		super(Edit, self).event_caret()
+		if OLD_BEHAVIOR == False :
+			super(base_eclipse.EclipseTextArea, self).event_caret()
 		if self is api.getFocusObject() and not eventHandler.isPendingEvents('gainFocus'):
 			self.detectPossibleSelectionChange()
 		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)

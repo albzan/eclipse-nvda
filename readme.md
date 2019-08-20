@@ -1,6 +1,6 @@
 # Eclipse Enhance
 
-## [Download the latest version of the addon](https://github.com/albzan/eclipse-nvda/releases/download/0.4/eclipseEnhance-0.4.nvda-addon)
+## [Download the latest version of the addon](https://github.com/albzan/eclipse-nvda/releases/download/0.5/eclipseEnhance-0.5.nvda-addon)
 
 This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 
@@ -8,7 +8,8 @@ This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 ### Main Features:
 * Play different sounds while you use the Eclipse shortcut **CTRL+. (dot)** to identify whether an error or a warning is selected.
 * Play different sounds when you press **CTRL+S** to indicate if the saved file contains errors / warnings.
-* Play a sound when the Eclipse's **ContentAssist** code completion pops-up. You can access it by pressing the TAB Key;
+* Play a sound when the Eclipse's **ContentAssist** code completion pops-up. 
+* Let the user to choose if she prefers the new behaviour of NVDA (automatically reading and braille autocompletion) or let the standard Eclipse behaviour where you can access ContentAssist by pressing the TAB Key;
 * Announce the breackpoint toggle while pressing **CTRL+SHIFT+B**.
 * Play a sound when you are in the editor during debug and you move on a line containing a breakpoint or in the current paused line.
 
@@ -46,6 +47,10 @@ Set annotations as follow:
 * **Search Results**: Text As Check Box Unselected
 * **Warnings**: Text As Check Box selected, then TAB and choose "highlighted" from the combo box.
 
+## NVDA 2019.2 and next behavior
+if you don't like the new NVDA behavior in Eclipse, expetially if you are using a braille display and you don't want to have the line hidden by autocompetition each time **ContentAssist** pops-up, you can enable the old behaviour of NVDA.
+In this way, you can access **ContentAssist** pressing the **TAB** key.
+To do this, edit the eclipse.py file of this addon, and set the **OLD_BEHAVIOR** variable to **True** . 
 
 ## Sounds Copyrights
 Sounds used to reports errors and warnings are covered by the Creative Commons License.

@@ -1,10 +1,16 @@
 #eclipseEnhance - NVDA Addon that improves access to the Eclipse IDE
 #This file is covered by the GNU General Public License.
 #See the file COPYING for more details.
-#Last update 2017-08-22
+#Last update 2019-08-20
 #Copyright (C) 2019 Alberto Zanella <lapostadialberto@gmail.com>
 
-from nvdaBuiltin.appModules import eclipse as base_eclipse
+
+OLD_BEHAVIOR = False
+
+if OLD_BEHAVIOR :
+	import eclipse_legacy as base_eclipse
+else :
+	from nvdaBuiltin.appModules import eclipse as base_eclipse
 from logHandler import log
 import addonHandler
 import eventHandler

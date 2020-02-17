@@ -5,10 +5,10 @@
 #Copyright (C) 2019 Alberto Zanella <lapostadialberto@gmail.com>
 
 
-OLD_BEHAVIOR = False
+OLD_BEHAVIOR = True
 
 if OLD_BEHAVIOR :
-	import eclipse_legacy as base_eclipse
+	from . import eclipse_legacy as base_eclipse
 else :
 	from nvdaBuiltin.appModules import eclipse as base_eclipse
 from logHandler import log
@@ -42,7 +42,7 @@ RGB_DBG = 'rgb(198219174)'
 
 class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 	oldpos = -1
-	
+
 	def event_gainFocus(self) :
 		super(EclipseTextArea,self).event_gainFocus()
 		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
@@ -72,12 +72,14 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 			super(base_eclipse.EclipseTextArea, self).event_caret()
 		if self is api.getFocusObject() and not eventHandler.isPendingEvents('gainFocus'):
 			self.detectPossibleSelectionChange()
-		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
-		tx.collapse()
-		tx.expand(textInfos.UNIT_LINE)
-		if self.oldpos == tx._startOffset :
-			return
-		self.processLine(tx)
+		try :
+			tx = self.makeTextInfo(textInfos.POSITION_SELECTION)
+			tx.collapse()
+			tx.expand(textInfos.UNIT_LINE)
+			if self.oldpos == tx._startOffset :
+				return
+			self.processLine(tx)
+		except: pass
 		
 	def processLine(self,tx) :
 		self.oldpos = tx._startOffset
@@ -148,7 +150,7 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 		formatField=textInfos.FormatField()
 		for field in ti.getTextWithFields(cfg):
 			if isinstance(field,textInfos.FieldCommand) and isinstance(field.field,textInfos.FormatField):
-				if field.field.has_key('background-color') :
+				if 'background-color' in field.field :
 					formatField.update(field.field)
 					rgb = formatField['background-color']
 					if rgb in retval :

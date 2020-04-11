@@ -3,15 +3,14 @@
 #See the file COPYING for more details.
 #Last update 2019-08-20
 #Copyright (C) 2019 Alberto Zanella <lapostadialberto@gmail.com>
+#TextInfo(self,position)
 
-
-OLD_BEHAVIOR = True
+OLD_BEHAVIOR = False
 
 if OLD_BEHAVIOR :
 	from . import eclipse_legacy as base_eclipse
 else :
 	from nvdaBuiltin.appModules import eclipse as base_eclipse
-from logHandler import log
 import addonHandler
 import eventHandler
 import controlTypes
@@ -22,6 +21,7 @@ import api
 import textInfos
 import braille
 from NVDAObjects.behaviors import EditableTextWithAutoSelectDetection as Edit
+from NVDAObjects.IAccessible import IA2TextTextInfo
 import globalCommands
 import globalVars
 import ui
@@ -40,9 +40,19 @@ RGB_WARN = 'rgb(24420045)'
 RGB_BP = 'rgb(00255)'
 RGB_DBG = 'rgb(198219174)'
 
+class SelectionChangeTextInfo(IA2TextTextInfo) :
+	def expand(self, unit) :
+		super(SelectionChangeTextInfo,self).expand(unit)
+		self._startOffset = self._getCaretOffset()
+
 class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 	oldpos = -1
-
+	def _caretMovementScriptHelper(self, gesture, unit) :
+		orig_tx = self.TextInfo
+		if unit == textInfos.UNIT_WORD : self.TextInfo = SelectionChangeTextInfo
+		super(EclipseTextArea,self)._caretMovementScriptHelper(gesture, unit)
+		self.TextInfo = orig_tx
+	
 	def event_gainFocus(self) :
 		super(EclipseTextArea,self).event_gainFocus()
 		tx = self.makeTextInfo(textInfos.POSITION_SELECTION)

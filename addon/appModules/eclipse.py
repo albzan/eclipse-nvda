@@ -3,7 +3,6 @@
 #See the file COPYING for more details.
 #Last update 2019-08-20
 #Copyright (C) 2019 Alberto Zanella <lapostadialberto@gmail.com>
-#TextInfo(self,position)
 
 OLD_BEHAVIOR = False
 

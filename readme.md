@@ -1,6 +1,6 @@
 # Eclipse Enhance
 
-## [Download the latest version of the addon](https://github.com/albzan/eclipse-nvda/releases/download/0.5/eclipseEnhance-0.5.nvda-addon)
+## [Download the latest version of the addon](https://github.com/albzan/eclipse-nvda/releases/download/0.6/eclipseEnhance-0.6.nvda-addon)
 
 This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 

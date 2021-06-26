@@ -25,6 +25,7 @@ import globalCommands
 import globalVars
 import ui
 import os.path
+import oleacc
 import speech
 
 addonHandler.initTranslation()
@@ -189,7 +190,9 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 class AppModule(base_eclipse.AppModule):
 	terminateButton = None
 	lastFocusOnSuggestions = False
-	def get_terminate_button(self) :
+	def get_terminate_button(self,lookEmptyName=False) :
+		myAccName = "Terminate"
+		if(lookEmptyName) : myAccName = None
 		if self.terminateButton != None : return
 		obj = api.getFocusObject()
 		while (obj.parent is not None) :
@@ -202,12 +205,14 @@ class AppModule(base_eclipse.AppModule):
 			objs = obj
 			while objs and objs.role != controlTypes.ROLE_TOOLBAR :
 				objs = objs.firstChild
+			obj = obj.next
 			if not objs : continue
 			for i in range(1,objs.childCount) :
-				if objs.IAccessibleObject.accName(i) == "Terminate" : 
+				if objs.IAccessibleObject.accRole(i) == oleacc.ROLE_SYSTEM_PUSHBUTTON and objs.IAccessibleObject.accName(i) == myAccName : 
 					self.terminateButton = objs.children[i-1]
 					return
-			obj = obj.next
+		#if we're here we can only try with empty button... try it!
+		return self.get_terminate_button(True)
 			
 	
 	def event_gainFocus(self,obj,nh):

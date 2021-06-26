@@ -197,12 +197,17 @@ class AppModule(base_eclipse.AppModule):
 				break
 			obj = obj.parent
 		if obj.name != "Console" : return
-		while obj.role is not controlTypes.ROLE_TOOLBAR :
-			obj = obj.firstChild
-		for i in xrange(1,obj.childCount) :
-			if obj.IAccessibleObject.accName(i) == "Terminate" : 
-				self.terminateButton = obj.children[i-1]
-				return
+		obj = obj.firstChild
+		while obj :
+			objs = obj
+			while objs and objs.role != controlTypes.ROLE_TOOLBAR :
+				objs = objs.firstChild
+			if not objs : continue
+			for i in range(1,objs.childCount) :
+				if objs.IAccessibleObject.accName(i) == "Terminate" : 
+					self.terminateButton = objs.children[i-1]
+					return
+			obj = obj.next
 			
 	
 	def event_gainFocus(self,obj,nh):

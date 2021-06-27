@@ -1,8 +1,8 @@
 #eclipseEnhance - NVDA Addon that improves access to the Eclipse IDE
 #This file is covered by the GNU General Public License.
 #See the file COPYING for more details.
-#Last update 2019-08-20
-#Copyright (C) 2019 Alberto Zanella <lapostadialberto@gmail.com>
+#Last update 2021-06-27
+#Copyright (C) 2021 Alberto Zanella <lapostadialberto@gmail.com>
 
 OLD_BEHAVIOR = False
 
@@ -10,6 +10,7 @@ if OLD_BEHAVIOR :
 	from . import eclipse_legacy as base_eclipse
 else :
 	from nvdaBuiltin.appModules import eclipse as base_eclipse
+from logHandler import log
 import addonHandler
 import eventHandler
 import controlTypes
@@ -26,6 +27,8 @@ import globalVars
 import ui
 import os.path
 import oleacc
+import winUser
+import mouseHandler
 import speech
 
 addonHandler.initTranslation()
@@ -189,17 +192,18 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 	
 class AppModule(base_eclipse.AppModule):
 	terminateButton = None
+	openConsoleButton = None
+	pinConsoleButton = None
 	lastFocusOnSuggestions = False
-	def get_terminate_button(self,lookEmptyName=False) :
-		myAccName = "Terminate"
-		if(lookEmptyName) : myAccName = None
-		if self.terminateButton != None : return
+
+	def get_tool_button(self,myAccName,myAccRole,myObj) :
+		if myObj != None : return myObj
 		obj = api.getFocusObject()
 		while (obj.parent is not None) :
 			if (obj.role == controlTypes.ROLE_TABCONTROL) and (obj.name == 'Console') :
 				break
 			obj = obj.parent
-		if obj.name != "Console" : return
+		if obj.name != "Console" : return myObj
 		obj = obj.firstChild
 		while obj :
 			objs = obj
@@ -207,20 +211,28 @@ class AppModule(base_eclipse.AppModule):
 				objs = objs.firstChild
 			obj = obj.next
 			if not objs : continue
-			for i in range(1,objs.childCount) :
-				if objs.IAccessibleObject.accRole(i) == oleacc.ROLE_SYSTEM_PUSHBUTTON and objs.IAccessibleObject.accName(i) == myAccName : 
-					self.terminateButton = objs.children[i-1]
-					return
-		#if we're here we can only try with empty button... try it!
-		return self.get_terminate_button(True)
-			
+			for i in range(1,objs.childCount+1) :
+				if objs.IAccessibleObject.accRole(i) == myAccRole and objs.IAccessibleObject.accName(i) == myAccName : 
+					return objs.children[i-1]
+		
+		if myAccName == "Terminate" : #Terminate button may have no accName
+			return self.get_tool_button(None,myAccRole,myObj)
+	
+	def get_terminate_button(self) :
+		self.terminateButton = self.get_tool_button("Terminate", oleacc.ROLE_SYSTEM_PUSHBUTTON, self.terminateButton)
+		
+	def get_open_console_button(self) :
+		self.openConsoleButton = self.get_tool_button("Open Console", oleacc.ROLE_SYSTEM_SPLITBUTTON, self.openConsoleButton)
+	
+	def get_pin_console_button(self) :
+		self.pinConsoleButton = self.get_tool_button("Pin Console", oleacc.ROLE_SYSTEM_CHECKBUTTON, self.pinConsoleButton)
+	
+	
 	
 	def event_gainFocus(self,obj,nh):
 		if obj.role == controlTypes.ROLE_PANE and self.lastFocusOnSuggestions :
 			return
 		nh()
-	
-	
 	
 	def event_focusEntered(self,obj,nh):
 		if obj.role == controlTypes.ROLE_TABCONTROL and self.lastFocusOnSuggestions :
@@ -259,6 +271,32 @@ class AppModule(base_eclipse.AppModule):
 		wfile  = os.path.join(PLUGIN_DIR, "sounds", "warn.wav")
 		nvwave.playWaveFile(wfile)
 	
+	def script_clickOpenConsoleButton(self, gesture) :
+		self.get_open_console_button()
+		if self.openConsoleButton != None :
+			try :
+				self.openConsoleButton.doAction()
+			except:
+				pass
+
+	def script_clickPinConsoleButton(self, gesture) :
+		self.get_pin_console_button()
+		if self.pinConsoleButton != None :
+			try :
+				oldX,oldY = winUser.getCursorPos()
+				winUser.setCursorPos(self.pinConsoleButton.location.left,self.pinConsoleButton.location.top)
+				#perform Mouse Left-Click
+				mouseHandler.executeMouseEvent(winUser.MOUSEEVENTF_LEFTDOWN,0,0)
+				mouseHandler.executeMouseEvent(winUser.MOUSEEVENTF_LEFTUP,0,0)
+				winUser.setCursorPos(oldX,oldY)
+				if controlTypes.STATE_CHECKED in self.pinConsoleButton.states :
+					ui.message(_("Pin Console")+" "+_("not checked"))
+				else :
+					ui.message(_("Pin Console")+" "+_("checked"))
+			except:
+				pass
+
+
 	def script_clickTerminateButton(self, gesture):
 		self.get_terminate_button()
 		if self.terminateButton != None :
@@ -277,4 +315,6 @@ class AppModule(base_eclipse.AppModule):
 		
 	__gestures = {
 		"kb:nvda+shift+t": "clickTerminateButton",
+		"kb:nvda+shift+o": "clickOpenConsoleButton",
+		"kb:nvda+shift+p": "clickPinConsoleButton",
 	}

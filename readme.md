@@ -72,7 +72,7 @@ Sounds used to reports errors and warnings are covered by the Creative Commons L
 * Iván Novegil C.
 
 ## Contribs:
-* 
+* Timothy Breitenfeldt
 * Pawel Urbanski
 * Alessandro Albano
 

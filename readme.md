@@ -1,6 +1,6 @@
 # Eclipse Enhance
 
-## [Download the latest version of the addon](https://github.com/albzan/eclipse-nvda/releases/download/0.6/eclipseEnhance-0.6.nvda-addon)
+## [Download the latest version of the addon](https://github.com/albzan/eclipse-nvda/releases/download/0.6/eclipseEnhance-0.7.nvda-addon)
 
 This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 
@@ -12,6 +12,13 @@ This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 * Let the user to choose if she prefers the new behaviour of NVDA (automatically reading and braille autocompletion) or let the standard Eclipse behaviour where you can access ContentAssist by pressing the TAB Key;
 * Announce the breackpoint toggle while pressing **CTRL+SHIFT+B**.
 * Play a sound when you are in the editor during debug and you move on a line containing a breakpoint or in the current paused line.
+* Let the user to click the Terminate button on Console view toolbar (default nvda-shift-t)
+* Let the user to click the Pin Console button on Console view toolbar (default nvda-shift-p)
+* Let the user to click the Open Console button on Console button on Console view toolbar (default nvda-shift-o)
+
+The latter are expetially useful when multiple output is used. You can use alt+f7 and alt+shift+f7 (Eclipse commands), to navigate through the running application output if you are running more than one program at a time. Useful to choose which app to terminate, or which output you would like to pin to this console view. Only available in the console view.
+
+All key bindings can be redefined within the Input Gestures dialog.
 
 ### Additional Braille Features:
 * Reports braille messages if you save a file that contains errors and / or warnings;
@@ -65,6 +72,7 @@ Sounds used to reports errors and warnings are covered by the Creative Commons L
 * Iván Novegil C.
 
 ## Contribs:
+* 
 * Pawel Urbanski
 * Alessandro Albano
 

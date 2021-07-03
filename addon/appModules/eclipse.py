@@ -10,7 +10,7 @@ if OLD_BEHAVIOR :
 	from . import eclipse_legacy as base_eclipse
 else :
 	from nvdaBuiltin.appModules import eclipse as base_eclipse
-from logHandler import log
+from scriptHandler import script
 import addonHandler
 import eventHandler
 import controlTypes
@@ -76,7 +76,7 @@ class EclipseTextArea(base_eclipse.EclipseTextArea,Edit):
 			speech.speakSelectionMessage(_("selected %s"),tx.text)
 		else:
 			tx.expand(textInfos.UNIT_LINE)
-			speech.speakTextInfo(tx,unit=textInfos.UNIT_LINE,reason=controlTypes.REASON_CARET)
+			speech.speakTextInfo(tx,unit=textInfos.UNIT_LINE,reason=controlTypes.OutputReason.CARET)
 			
 	
 	def event_caret(self) :
@@ -271,6 +271,12 @@ class AppModule(base_eclipse.AppModule):
 		wfile  = os.path.join(PLUGIN_DIR, "sounds", "warn.wav")
 		nvwave.playWaveFile(wfile)
 	
+	
+	@script(
+		description=_("Click the Open Console toolbar button"),
+		category="Eclipse",
+		gestures=["kb:nvda+shift+o"]
+	)
 	def script_clickOpenConsoleButton(self, gesture) :
 		self.get_open_console_button()
 		if self.openConsoleButton != None :
@@ -279,6 +285,11 @@ class AppModule(base_eclipse.AppModule):
 			except:
 				pass
 
+	@script(
+		description=_("Click the Pin Console toolbar button"),
+		category="Eclipse",
+		gestures=["kb:nvda+shift+p"]
+	)
 	def script_clickPinConsoleButton(self, gesture) :
 		self.get_pin_console_button()
 		if self.pinConsoleButton != None :
@@ -296,7 +307,12 @@ class AppModule(base_eclipse.AppModule):
 			except:
 				pass
 
-
+	
+	@script(
+		description=_("Click the terminate toolbar button"),
+		category="Eclipse",
+		gestures=["kb:NVDA+shift+t"]
+	)
 	def script_clickTerminateButton(self, gesture):
 		self.get_terminate_button()
 		if self.terminateButton != None :
@@ -312,9 +328,3 @@ class AppModule(base_eclipse.AppModule):
 			globalCommands.commands.script_braille_scrollBack(gesture)
 		except COMError :
 			globalCommands.commands.script_braille_previousLine(gesture)
-		
-	__gestures = {
-		"kb:nvda+shift+t": "clickTerminateButton",
-		"kb:nvda+shift+o": "clickOpenConsoleButton",
-		"kb:nvda+shift+p": "clickPinConsoleButton",
-	}

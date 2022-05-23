@@ -200,14 +200,14 @@ class AppModule(base_eclipse.AppModule):
 		if myObj != None : return myObj
 		obj = api.getFocusObject()
 		while (obj.parent is not None) :
-			if (obj.role == controlTypes.ROLE_TABCONTROL) and (obj.name == 'Console') :
+			if (obj.role == controlTypes.Role.TABCONTROL) and (obj.name == 'Console') :
 				break
 			obj = obj.parent
 		if obj.name != "Console" : return myObj
 		obj = obj.firstChild
 		while obj :
 			objs = obj
-			while objs and objs.role != controlTypes.ROLE_TOOLBAR :
+			while objs and objs.role != controlTypes.Role.TOOLBAR :
 				objs = objs.firstChild
 			obj = obj.next
 			if not objs : continue
@@ -230,30 +230,30 @@ class AppModule(base_eclipse.AppModule):
 	
 	
 	def event_gainFocus(self,obj,nh):
-		if obj.role == controlTypes.ROLE_PANE and self.lastFocusOnSuggestions :
+		if obj.role == controlTypes.Role.PANE and self.lastFocusOnSuggestions :
 			return
 		nh()
 	
 	def event_focusEntered(self,obj,nh):
-		if obj.role == controlTypes.ROLE_TABCONTROL and self.lastFocusOnSuggestions :
+		if obj.role == controlTypes.Role.TABCONTROL and self.lastFocusOnSuggestions :
 			return
 		nh()
 	
 	def event_NVDAObject_init(self, obj):
 		super(AppModule, self).event_NVDAObject_init(obj)
 		
-		if obj.role == controlTypes.ROLE_DIALOG and "show Template Proposals" in obj.description :
+		if obj.role == controlTypes.Role.DIALOG and "show Template Proposals" in obj.description :
 			# Remove annoying tooltips
 			obj.description = ""
 			self.lastFocusOnSuggestions = True
 		
-		if obj.windowClassName == "SysListView32" and obj.role == controlTypes.ROLE_LISTITEM:
+		if obj.windowClassName == "SysListView32" and obj.role == controlTypes.Role.LISTITEM:
 			if(isinstance(api.getFocusObject(),  EclipseTextArea)) :
 				self.play_suggestions()
 
 	def chooseNVDAObjectOverlayClasses(self, obj, clsList):
 		super(AppModule, self).chooseNVDAObjectOverlayClasses(obj, clsList)
-		if obj.windowClassName == "SWT_Window0" and obj.role == controlTypes.ROLE_EDITABLETEXT:
+		if obj.windowClassName == "SWT_Window0" and obj.role == controlTypes.Role.EDITABLETEXT:
 			clsList.remove(base_eclipse.EclipseTextArea)
 			clsList.insert(0, EclipseTextArea)
 
@@ -300,7 +300,7 @@ class AppModule(base_eclipse.AppModule):
 				mouseHandler.executeMouseEvent(winUser.MOUSEEVENTF_LEFTDOWN,0,0)
 				mouseHandler.executeMouseEvent(winUser.MOUSEEVENTF_LEFTUP,0,0)
 				winUser.setCursorPos(oldX,oldY)
-				if controlTypes.STATE_CHECKED in self.pinConsoleButton.states :
+				if controlTypes.State.CHECKED in self.pinConsoleButton.states :
 					ui.message(_("Pin Console")+" "+_("not checked"))
 				else :
 					ui.message(_("Pin Console")+" "+_("checked"))

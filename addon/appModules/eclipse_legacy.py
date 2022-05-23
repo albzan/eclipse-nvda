@@ -20,11 +20,11 @@ class EclipseTextArea(IAccessible):
 class AppModule(appModuleHandler.AppModule):
 
 	def event_NVDAObject_init(self, obj):
-		if obj.windowClassName == "SysTreeView32" and obj.role in (controlTypes.ROLE_TREEVIEWITEM, controlTypes.ROLE_CHECKBOX) and controlTypes.STATE_FOCUSED not in obj.states:
+		if obj.windowClassName == "SysTreeView32" and obj.role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.CHECKBOX) and controlTypes.State.FOCUSED not in obj.states:
 			# Eclipse tree views seem to fire a focus event on the previously focused item before firing focus on the new item (EclipseBug:315339).
 			# Try to filter this out.
 			obj.shouldAllowIAccessibleFocusEvent = False
 
 	def chooseNVDAObjectOverlayClasses(self, obj, clsList):
-		if obj.windowClassName == "SWT_Window0" and obj.role == controlTypes.ROLE_EDITABLETEXT:
+		if obj.windowClassName == "SWT_Window0" and obj.role == controlTypes.Role.EDITABLETEXT:
 			clsList.insert(0, EclipseTextArea)

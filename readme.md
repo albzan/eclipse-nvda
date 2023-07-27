@@ -12,6 +12,7 @@ This NVDA Add-on offers an enhanced support while working in the eclipse IDE.
 * Let the user to choose if she prefers the new behaviour of NVDA (automatically reading and braille autocompletion) or let the standard Eclipse behaviour where you can access ContentAssist by pressing the TAB Key;
 * Announce the breackpoint toggle while pressing **CTRL+SHIFT+B**.
 * Play a sound when you are in the editor during debug and you move on a line containing a breakpoint or in the current paused line.
+* Fixes the NVDA status bar command to read if there is an error on the current line
 * Let the user to click the Terminate button on Console view toolbar (default nvda-shift-t)
 * Let the user to click the Pin Console button on Console view toolbar (default nvda-shift-p)
 * Let the user to click the Open Console button on Console button on Console view toolbar (default nvda-shift-o)

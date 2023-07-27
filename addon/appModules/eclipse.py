@@ -196,6 +196,18 @@ class AppModule(base_eclipse.AppModule):
 	pinConsoleButton = None
 	lastFocusOnSuggestions = False
 
+	def _get_statusBar(self):
+		foreground = api.getForegroundObject()
+		obj = foreground.simpleFirstChild
+
+		while obj:
+			if obj.role == controlTypes.Role.STATUSBAR:
+				return obj.simpleFirstChild
+
+			obj = obj.simpleNext
+
+		return None
+
 	def get_tool_button(self,myAccName,myAccRole,myObj) :
 		if myObj != None : return myObj
 		obj = api.getFocusObject()

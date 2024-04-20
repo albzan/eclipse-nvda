@@ -8,8 +8,14 @@ OLD_BEHAVIOR = False
 
 if OLD_BEHAVIOR :
 	from . import eclipse_legacy as base_eclipse
+	AutocompletionListItem = None
 else :
 	from nvdaBuiltin.appModules import eclipse as base_eclipse
+	try:
+		from nvdaBuiltin.appModules.eclipse import AutocompletionListItem
+	except ImportError:
+		AutocompletionListItem = None
+
 from scriptHandler import script
 import addonHandler
 import eventHandler
@@ -268,7 +274,19 @@ class AppModule(base_eclipse.AppModule):
 		if obj.windowClassName == "SWT_Window0" and obj.role == controlTypes.Role.EDITABLETEXT:
 			clsList.remove(base_eclipse.EclipseTextArea)
 			clsList.insert(0, EclipseTextArea)
-
+		# Autocompletion items are placed outside the main eclipse window
+		if (
+				AutocompletionListItem is not None and
+				AutocompletionListItem not in clsList and
+				obj.role == controlTypes.Role.LISTITEM
+				and obj.parent.parent.parent.role == controlTypes.Role.DIALOG
+				and obj.parent.parent.parent.simpleParent == api.getDesktopObject()
+				and obj.parent.parent.parent.parent.simpleNext.role in (
+					controlTypes.Role.BUTTON,
+					controlTypes.Role.TOGGLEBUTTON
+				)
+			):
+				clsList.insert(0, AutocompletionListItem)
 
 	
 	def play_suggestions(self) :
